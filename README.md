@@ -96,9 +96,9 @@ Add your screenshots to `assets/images/` and update the links below.
 |------|---------|
 | ![Home](assets/images/home.png) | ![Checker](assets/images/checker.png) |
 
-| Generator | Mobile |
-|-----------|--------|
-| ![Generator](assets/images/generator.png) 
+| Generator |
+|-----------|
+| ![Generator](assets/images/generator.png) |
 
 ## 🔮 Future Improvements
 
