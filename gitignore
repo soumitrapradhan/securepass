@@ -1,1 +1,20 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
 
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Dependencies / build output (not used now, kept for future changes)
+node_modules/
+dist/
+*.log
+
+# Python (if a Flask backend is added later)
+__pycache__/
+*.pyc
+venv/
+.env
