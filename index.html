@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecurePass – Password Strength Checker</title>
+  <meta name="description" content="SecurePass analyzes password strength, estimates entropy, and generates strong passwords entirely in your browser. Test. Analyze. Strengthen. Secure.">
+  <meta name="theme-color" content="#070B18">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300E5FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z'/%3E%3Cpath d='M8.5 12l2.5 2.5 4.5-5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ===== Animated background layers ===== -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg-glow bg-glow--cyan"></div>
+    <div class="bg-glow bg-glow--purple"></div>
+    <div class="bg-grid"></div>
+    <canvas id="bg-canvas"></canvas>
+  </div>
+
+  <a class="skip-link" href="#checker">Skip to password checker</a>
+
+  <!-- ===== A. Navigation ===== -->
+  <header class="nav" id="top">
+    <div class="container nav__inner">
+      <a href="#home" class="logo" aria-label="SecurePass home">
+        <svg class="logo__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+        <span>Secure<b>Pass</b></span>
+      </a>
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="nav-links" aria-label="Main navigation">
+        <a href="#home" class="is-active">Home</a>
+        <a href="#checker">Password Checker</a>
+        <a href="#generator">Password Generator</a>
+        <a href="#tips">Security Tips</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== B. Hero ===== -->
+    <section class="hero" id="home">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <span class="status-pill"><i class="status-dot"></i> Local analysis active &middot; nothing is uploaded</span>
+          <h1>Your Password. <span class="grad">Your First Line of Defense.</span></h1>
+          <p class="hero__lead">Analyze password strength, identify security weaknesses, and generate stronger passwords with SecurePass.</p>
+          <div class="hero__actions">
+            <a href="#checker" class="btn btn--primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+              Start Checking
+            </a>
+            <a href="#generator" class="btn btn--ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-7.6 7.6a5.5 5.5 0 11-7.8 7.8 5.5 5.5 0 017.8-7.8zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+              Generate Password
+            </a>
+          </div>
+          <p class="tagline">Test. Analyze. Strengthen. Secure.</p>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <svg viewBox="0 0 400 400" class="shield-art">
+            <defs>
+              <linearGradient id="g-shield" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00E5FF" stop-opacity=".9"/>
+                <stop offset="1" stop-color="#8B5CF6" stop-opacity=".9"/>
+              </linearGradient>
+              <radialGradient id="g-core" cx=".5" cy=".4" r=".7">
+                <stop offset="0" stop-color="#00E5FF" stop-opacity=".25"/>
+                <stop offset="1" stop-color="#10182B" stop-opacity=".9"/>
+              </radialGradient>
+            </defs>
+            <g class="ring ring--1"><circle cx="200" cy="200" r="170" fill="none" stroke="#00E5FF" stroke-opacity=".25" stroke-dasharray="4 10"/><circle cx="200" cy="30" r="5" fill="#00E5FF"/></g>
+            <g class="ring ring--2"><circle cx="200" cy="200" r="135" fill="none" stroke="#8B5CF6" stroke-opacity=".35" stroke-dasharray="2 8"/><circle cx="335" cy="200" r="4" fill="#8B5CF6"/></g>
+            <path d="M200 70l95 34v76c0 62-40 112-95 134-55-22-95-72-95-134v-76z" fill="url(#g-core)" stroke="url(#g-shield)" stroke-width="3"/>
+            <path d="M200 92l75 27v62c0 49-31 88-75 106-44-18-75-57-75-106v-62z" fill="none" stroke="#00E5FF" stroke-opacity=".25"/>
+            <rect x="166" y="190" width="68" height="52" rx="10" fill="#070B18" stroke="#00E5FF" stroke-width="2.5"/>
+            <path d="M178 190v-16a22 22 0 0144 0v16" fill="none" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="200" cy="214" r="6" fill="#00E5FF"/>
+            <path d="M200 218v12" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"/>
+            <g fill="#00E5FF" opacity=".7">
+              <circle cx="70" cy="120" r="3"/><circle cx="335" cy="95" r="3"/><circle cx="350" cy="290" r="3"/><circle cx="55" cy="285" r="3"/>
+            </g>
+            <g stroke="#00E5FF" stroke-opacity=".25"><path d="M70 120L105 150M335 95L295 125M350 290L300 260M55 285L105 255"/></g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== C. Password Strength Checker ===== -->
+    <section class="section" id="checker">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">Tool 01</span>
+          <h2>Password Strength Checker</h2>
+          <p>Type a password to see its strength update in real time. Analysis runs entirely in your browser.</p>
+        </header>
+
+        <div class="grid grid--checker">
+          <!-- Input + meter + checklist -->
+          <article class="card card--glow" aria-labelledby="checker-title">
+            <h3 id="checker-title" class="card__title">Test a password</h3>
+
+            <label for="password-input" class="field-label">Enter a password</label>
+            <div class="input-wrap">
+              <input type="password" id="password-input" class="input input--mono"
+                     placeholder="Type or paste a password to analyze"
+                     autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                     maxlength="128" aria-describedby="privacy-note">
+              <button type="button" class="icon-btn" id="toggle-visibility" aria-label="Show password" aria-pressed="false" title="Show / hide password">
+                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M17.9 17.9A10.9 10.9 0 0112 20C5 20 1 12 1 12a18.5 18.5 0 015.1-5.9M9.9 4.2A10.7 10.7 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.2 3.2M1 1l22 22"/><path d="M14.1 14.1a3 3 0 11-4.2-4.2"/></svg>
+              </button>
+              <button type="button" class="icon-btn" id="clear-password" aria-label="Clear password" title="Clear password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="meter" id="meter" data-level="none">
+              <div class="meter__track" role="progressbar" aria-label="Password strength score" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter-track">
+                <div class="meter__bar" id="meter-bar"></div>
+              </div>
+              <div class="meter__steps" aria-hidden="true">
+                <span>Very Weak</span><span>Weak</span><span>Medium</span><span>Strong</span><span>Very Strong</span>
+              </div>
+            </div>
+
+            <div class="stats" aria-live="polite">
+              <div class="stat"><span class="stat__label">Strength</span><span class="stat__value stat__value--level" id="stat-level">&mdash;</span></div>
+              <div class="stat"><span class="stat__label">Score</span><span class="stat__value" id="stat-score">0<small>/100</small></span></div>
+              <div class="stat"><span class="stat__label">Entropy</span><span class="stat__value" id="stat-entropy">0<small> bits</small></span></div>
+              <div class="stat"><span class="stat__label">Characters</span><span class="stat__value" id="stat-length">0</span></div>
+            </div>
+
+            <h4 class="subhead">Validation checklist</h4>
+            <ul class="checklist" id="checklist"></ul>
+
+            <div class="card__footer">
+              <p class="privacy" id="privacy-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                Your password stays on your device. SecurePass does not upload or store the password you enter.
+              </p>
+              <button type="button" class="btn btn--ghost btn--sm" id="reset-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 109-9 9.7 9.7 0 00-6.7 2.8L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset
+              </button>
+            </div>
+          </article>
+
+          <!-- D. Dashboard -->
+          <article class="card" aria-labelledby="dash-title">
+            <h3 id="dash-title" class="card__title">Analysis dashboard</h3>
+
+            <div class="dash-grid">
+              <div class="tile"><span class="tile__label">Password length</span><span class="tile__value" id="dash-length">&mdash;</span></div>
+              <div class="tile"><span class="tile__label">Character variety</span><span class="tile__value" id="dash-variety">&mdash;</span></div>
+              <div class="tile"><span class="tile__label">Estimated entropy</span><span class="tile__value" id="dash-entropy">&mdash;</span></div>
+              <div class="tile"><span class="tile__label">Classification</span><span class="tile__value" id="dash-level">&mdash;</span></div>
+              <div class="tile tile--wide"><span class="tile__label">Est. offline cracking time (fast hash, 10 billion guesses/sec)</span><span class="tile__value" id="dash-crack">&mdash;</span></div>
+            </div>
+
+            <h4 class="subhead">Why this score?</h4>
+            <div id="why-box" class="why">
+              <p class="muted">Start typing a password to see a breakdown of how its score was calculated.</p>
+            </div>
+            <ul class="findings" id="findings"></ul>
+
+            <p class="disclaimer">
+              <strong>Important:</strong> entropy is an <em>estimate</em>. It does not account for every real-world attack
+              (leaked-password lists, targeted guessing, phishing, malware). A high score does not mean a password is
+              completely secure, and a password should never be reused.
+            </p>
+          </article>
+        </div>
+
+        <!-- F. Recommendations -->
+        <article class="card card--wide" aria-labelledby="rec-title">
+          <h3 id="rec-title" class="card__title">Security recommendations</h3>
+          <ul class="recs" id="recs">
+            <li class="rec rec--info"><span class="rec__tag">Tip</span><span>Enter a password above and these recommendations will adapt to what is found.</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== E. Password Generator ===== -->
+    <section class="section" id="generator">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">Tool 02</span>
+          <h2>Password Generator</h2>
+          <p>Create strong random passwords using your browser's cryptographically secure random number generator.</p>
+        </header>
+
+        <article class="card card--glow gen" aria-labelledby="gen-title">
+          <h3 id="gen-title" class="card__title">Generate a secure password</h3>
+
+          <div class="gen__output">
+            <input type="text" id="generated-password" class="input input--mono input--output" readonly
+                   aria-label="Generated password" placeholder="Click Generate Password" autocomplete="off" spellcheck="false">
+            <button type="button" class="icon-btn" id="copy-icon" aria-label="Copy password" title="Copy password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+
+          <div class="meter meter--mini" id="gen-meter" data-level="none">
+            <div class="meter__track"><div class="meter__bar" id="gen-meter-bar"></div></div>
+            <p class="gen__strength" id="gen-strength" aria-live="polite">&mdash;</p>
+          </div>
+
+          <div class="gen__options">
+            <div class="slider">
+              <label for="length-slider" class="field-label">Password length: <output id="length-value" for="length-slider">16</output></label>
+              <input type="range" id="length-slider" min="8" max="32" value="16" step="1">
+              <div class="slider__scale"><span>8</span><span>32</span></div>
+            </div>
+
+            <fieldset class="toggles">
+              <legend class="field-label">Character types</legend>
+              <label class="toggle"><input type="checkbox" id="opt-upper" checked><span class="toggle__ui"></span><span>Uppercase <small>A-Z</small></span></label>
+              <label class="toggle"><input type="checkbox" id="opt-lower" checked><span class="toggle__ui"></span><span>Lowercase <small>a-z</small></span></label>
+              <label class="toggle"><input type="checkbox" id="opt-numbers" checked><span class="toggle__ui"></span><span>Numbers <small>0-9</small></span></label>
+              <label class="toggle"><input type="checkbox" id="opt-special" checked><span class="toggle__ui"></span><span>Special <small>!@#$%</small></span></label>
+            </fieldset>
+          </div>
+
+          <p class="form-error" id="gen-error" role="alert" hidden></p>
+
+          <div class="gen__actions">
+            <button type="button" class="btn btn--primary" id="generate-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+              Generate Password
+            </button>
+            <button type="button" class="btn btn--ghost" id="regenerate-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0020.5 15"/></svg>
+              Regenerate
+            </button>
+            <button type="button" class="btn btn--ghost" id="copy-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              <span id="copy-label">Copy Password</span>
+            </button>
+            <button type="button" class="btn btn--link" id="analyze-btn">Analyze in checker &rarr;</button>
+          </div>
+          <p class="muted gen__note">Generated passwords are created locally and are never sent anywhere or saved.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== G. Security Tips ===== -->
+    <section class="section" id="tips">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">Best practices</span>
+          <h2>Security Tips</h2>
+          <p>Six habits that do more for your account security than any complicated password rule.</p>
+        </header>
+
+        <div class="grid grid--tips">
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h18M3 12l4-4M3 12l4 4M21 12l-4-4M21 12l-4 4"/></svg></div>
+            <h3>Use long and unique passwords</h3>
+            <p>Aim for 14+ characters. Length beats complexity: a long random password or passphrase is far harder to crack than a short "complex" one.</p>
+          </article>
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/><path d="M3 21L21 3"/></svg></div>
+            <h3>Never reuse passwords</h3>
+            <p>When one site is breached, attackers try the same email and password everywhere else (credential stuffing). Every account needs its own password.</p>
+          </article>
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M3 3l18 18"/></svg></div>
+            <h3>Avoid predictable information</h3>
+            <p>Names, birthdays, phone numbers, pet names, and favourite teams are easy to find or guess. Keep personal details out of your passwords.</p>
+          </article>
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01M9 8h6M9 12h6"/></svg></div>
+            <h3>Enable multi-factor authentication</h3>
+            <p>MFA adds a second proof of identity. Even if your password leaks, an attacker still cannot sign in. Prefer an authenticator app or a security key over SMS.</p>
+          </article>
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
+            <h3>Use a password manager</h3>
+            <p>A reputable password manager creates and remembers long random passwords for you, so you only need to remember one strong master passphrase.</p>
+          </article>
+          <article class="card tip">
+            <div class="tip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+            <h3>Change compromised passwords promptly</h3>
+            <p>If a service reports a breach or you spot suspicious activity, change that password immediately, and change it anywhere else it was used.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== H. About ===== -->
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section__head">
+          <span class="eyebrow">The project</span>
+          <h2>About SecurePass</h2>
+        </header>
+
+        <article class="card card--glow about">
+          <p class="about__text">SecurePass is an educational cybersecurity project designed to demonstrate password security analysis, password strength estimation, entropy calculation, and secure password generation.</p>
+          <dl class="about__meta">
+            <div><dt>Project Name</dt><dd>SecurePass</dd></div>
+            <div><dt>Category</dt><dd>Cybersecurity</dd></div>
+            <div><dt>Technologies</dt><dd>HTML, CSS, JavaScript (Web Crypto API)</dd></div>
+            <div><dt>Purpose</dt><dd>Password Security Awareness</dd></div>
+          </dl>
+          <ul class="about__points">
+            <li>100% client-side: no server, no database, no external APIs.</li>
+            <li>Passwords are never stored, logged, or transmitted.</li>
+            <li>Random passwords come from <code>crypto.getRandomValues()</code>, not <code>Math.random()</code>.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>&copy; <span id="year">2026</span> SecurePass &middot; Educational project &middot; MIT License</span>
+      <span class="muted">Test. Analyze. Strengthen. Secure.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/password-checker.js"></script>
+  <script src="js/password-generator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
