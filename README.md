@@ -98,7 +98,7 @@ Add your screenshots to `assets/images/` and update the links below.
 
 | Generator | Mobile |
 |-----------|--------|
-| ![Generator](assets/images/generator.png) | ![Mobile](assets/images/mobile.jpeg) |
+| ![Generator](assets/images/generator.png) 
 
 ## 🔮 Future Improvements
 
