@@ -61,36 +61,7 @@ securepass/
 └── .gitignore
 ```
 
-## 🚀 Installation & Running Locally
 
-There is nothing to install. SecurePass has **no dependencies**.
-
-### Option 1 – Open the file (easiest)
-
-1. Download or clone the project.
-2. Open the `securepass` folder.
-3. Double-click **`index.html`**. It opens in your default browser.
-
-### Option 2 – Local server on Windows (recommended)
-
-A local server gives you the same "secure context" real websites have, which makes the clipboard API work most reliably.
-
-1. Install [Python 3](https://www.python.org/downloads/) (tick **"Add Python to PATH"** during setup).
-2. Open **Command Prompt** or **PowerShell** and move into the project folder:
-   ```powershell
-   cd path\to\securepass
-   ```
-3. Start the server:
-   ```powershell
-   python -m http.server 8000
-   ```
-   (If `python` is not found, try `py -m http.server 8000`.)
-4. Open **http://localhost:8000** in your browser.
-5. Press `Ctrl + C` in the terminal to stop the server.
-
-### Option 3 – VS Code Live Server
-
-Install the *Live Server* extension, right-click `index.html` and choose **Open with Live Server**.
 
 ## 🌐 Deployment (optional)
 
