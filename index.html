@@ -293,7 +293,75 @@
         </div>
       </div>
     </section>
+<!-- ===== Help / How to use ===== -->
+<section class="section" id="help">
+  <div class="container">
+    <header class="section__head">
+      <span class="eyebrow">Guide</span>
+      <h2>Help &amp; How to Use</h2>
+      <p>New here? Follow these four steps, then check the FAQ if you have questions.</p>
+    </header>
 
+    <ol class="steps">
+      <li class="card step">
+        <span class="step__num">1</span>
+        <h3>Type a password</h3>
+        <p>Go to <a href="#checker">Password Checker</a> and type or paste a password. Use the eye button to show or hide it.</p>
+      </li>
+      <li class="card step">
+        <span class="step__num">2</span>
+        <h3>Read the result</h3>
+        <p>The colour bar, score and checklist update as you type. Red items on the checklist show what to fix.</p>
+      </li>
+      <li class="card step">
+        <span class="step__num">3</span>
+        <h3>Follow the advice</h3>
+        <p>Check "Why this score?" and the recommendations, then improve your password: make it longer and avoid patterns.</p>
+      </li>
+      <li class="card step">
+        <span class="step__num">4</span>
+        <h3>Generate a strong one</h3>
+        <p>In <a href="#generator">Password Generator</a>, pick a length and character types, click Generate, then Copy and save it in a password manager.</p>
+      </li>
+    </ol>
+
+    <div class="faq">
+      <h3 class="subhead">Frequently asked questions</h3>
+      <details>
+        <summary>Is the password I type sent or saved anywhere?</summary>
+        <p>No. Everything runs in your browser. The password is never uploaded, stored or logged. Click <strong>Reset</strong> to clear it, or just close the tab.</p>
+      </details>
+      <details>
+        <summary>How is the score calculated?</summary>
+        <p>SecurePass estimates entropy from the password's length and the types of characters it uses. It then lowers the estimate for common words, keyboard patterns (qwerty), sequences (abc, 123), repeats and years. The score runs from 0 to 100: 0&ndash;19 Very Weak, 20&ndash;39 Weak, 40&ndash;59 Medium, 60&ndash;79 Strong, 80&ndash;100 Very Strong.</p>
+      </details>
+      <details>
+        <summary>What is entropy?</summary>
+        <p>Entropy, measured in bits, shows how many guesses an attacker would need on average. Each extra bit doubles the work. It is only an estimate and does not cover every real attack.</p>
+      </details>
+      <details>
+        <summary>Why is my password weak even though it has capitals, numbers and symbols?</summary>
+        <p>Variety alone is not enough. Passwords like <code>Summer2024!</code> follow patterns attackers try first (a word, a year, a symbol at the end), so they score low. Length and randomness matter most.</p>
+      </details>
+      <details>
+        <summary>What length should I use?</summary>
+        <p>Use at least 12 characters, and 14&ndash;16 or more for important accounts such as email and banking.</p>
+      </details>
+      <details>
+        <summary>Is the generated password safe to use?</summary>
+        <p>Yes. It is created with your browser's cryptographically secure random generator (<code>crypto.getRandomValues</code>). It is created on your device and not saved, so copy it into a password manager straight away.</p>
+      </details>
+      <details>
+        <summary>Does a high score mean my password is completely secure?</summary>
+        <p>No. A strong password can still be stolen by phishing, malware or a data breach. Use a unique password for each account and turn on multi-factor authentication.</p>
+      </details>
+      <details>
+        <summary>The Copy button did not work. What now?</summary>
+        <p>Some browsers block copying on pages opened as local files. Select the generated password and press <kbd>Ctrl</kbd> + <kbd>C</kbd>, or open the site through its web link.</p>
+      </details>
+    </div>
+  </div>
+</section>
     <!-- ===== H. About ===== -->
     <section class="section" id="about">
       <div class="container">
